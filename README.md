@@ -1,4 +1,4 @@
-## NLW - Rocketseat - 09/09/2024 à 12/09/2024
+## NLW - Rocketseat - In-Orbit 09/09/2024 à 12/09/2024
 
 - Repositório: https://github.com/rocketseat-education/nlw-pocket-js-node/tree/aulas
 - Figma: https://www.figma.com/community/file/1415093862269754302/nlw-pocket-js-in-orbit
