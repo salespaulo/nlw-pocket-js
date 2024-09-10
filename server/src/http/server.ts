@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import { createGoalSchema, createGoal, getWeekPendingGoal } from '../goal'
+import { createGoalSchema, createGoal, getWeekPendingGoal, createGoalCompletionSchema, createGoalCompletation } from '../goal'
 
 const app = fastify()
 
@@ -9,6 +9,11 @@ app.post('/goals', async req => {
         title: goal.title,
         desireWeeklyFrequency: goal.desireWeeklyFrequency
     })
+})
+
+app.post('/goals/complete', async req => {
+    const goal = createGoalCompletionSchema.parse(req.body)
+    return createGoalCompletation(goal)
 })
 
 app.get('/goals/pending', async () => {
