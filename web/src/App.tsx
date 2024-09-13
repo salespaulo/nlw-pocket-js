@@ -12,6 +12,10 @@ export const App = () => {
     staleTime: 1000 * 60,
   })
 
+  if (!data) {
+    return null
+  }
+
   return (
     <Dialog>
       {data?.total && data.total > 0 ? <SummaryGoal /> : <EmptyGoal />}

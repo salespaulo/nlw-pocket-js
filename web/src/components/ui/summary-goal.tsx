@@ -42,7 +42,7 @@ export const SummaryGoal = () => {
       metas,
     }
   })
-  const style = { width: `${completedPercent}` }
+  const style = { width: `${completedPercent}%` }
 
   return (
     <div className={'py-10 max-w-[480px] px-5 mx-auto flex flex-col gap-6'}>
