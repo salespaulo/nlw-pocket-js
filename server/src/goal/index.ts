@@ -34,24 +34,24 @@ export const createGoalCompletionSchema = z.object({
     goalId: z.string()
 })
 
-export const createGoalCompletation = async ({ goalId }: CreateGoalCompletion) => {
+export const createGoalCompletion = async ({ goalId }: CreateGoalCompletion) => {
     const firstDayOfWeek = dayjs().startOf('week').toDate()
     const lastDayOfWeek = dayjs().endOf('week').toDate()
     const goalsCompletionCount = createGoalsCompletionCount(firstDayOfWeek, lastDayOfWeek)
 
-    const goalCompletation = await db.with(goalsCompletionCount)
+    const goalCompletionResult = await db.with(goalsCompletionCount)
         .select({
             desireWeeklyFrequency: goals.desireWeeklyFrequency,
-            completationCount: goalsCompletionCount.completationCount
+            completionCount: goalsCompletionCount.completionCount
         })
         .from(goals)
         .where(eq(goals.id, goalId))
         .leftJoin(goalsCompletionCount, eq(goalsCompletionCount.goalId, goals.id))
         .limit(1)
 
-    const { desireWeeklyFrequency, completationCount } = goalCompletation[0]
+    const { desireWeeklyFrequency, completionCount } = goalCompletionResult[0]
 
-    if (completationCount >= desireWeeklyFrequency) {
+    if (completionCount >= desireWeeklyFrequency) {
         throw new Error("Goal already completed this week!")
     }
 
@@ -76,7 +76,7 @@ export const getWeekPendingGoal = async () => {
             id: goalsCreateUpToWeek.id,
             title: goalsCreateUpToWeek.title,
             desireWeeklyFrequency: goalsCreateUpToWeek.desireWeeklyFrequency,
-            completationCount: goalsCompletionCount.completationCount
+            completionCount: goalsCompletionCount.completionCount
         })
         .from(goalsCreateUpToWeek)
         .leftJoin(goalsCompletionCount, eq(goalsCompletionCount.goalId, goalsCreateUpToWeek.id))
@@ -168,7 +168,7 @@ const createGoalsCompletionCount = (firstDayOfWeek: Date, lastDayOfWeek: Date) =
     db.$with('goal_completion_count').as(
         db.select({
             goalId: goalCompletions.goalId,
-            completationCount: count(goalCompletions.id).as('completationCount')
+            completionCount: count(goalCompletions.id).as('completionCount')
         }).from(goalCompletions)
             .where(and(lte(goalCompletions.createAt, lastDayOfWeek), gte(goalCompletions.createAt, firstDayOfWeek)))
             .groupBy(goalCompletions.goalId)

@@ -1,11 +1,11 @@
 import fastify from "fastify";
 import cors from "@fastify/cors"
 import {
-    createGoalSchema,
     createGoal,
-    getWeekPendingGoal,
+    createGoalCompletion,
     createGoalCompletionSchema,
-    createGoalCompletation,
+    createGoalSchema,
+    getWeekPendingGoal,
     getWeekSummary
 } from '../goal'
 
@@ -22,7 +22,7 @@ app.post('/goals', async req => {
 
 app.post('/goals/complete', async req => {
     const goal = createGoalCompletionSchema.parse(req.body)
-    return createGoalCompletation(goal)
+    return createGoalCompletion(goal)
 })
 
 app.get('/goals/pending', async () => {
@@ -30,8 +30,7 @@ app.get('/goals/pending', async () => {
 })
 
 app.get('/goals/summary', async () => {
-    const summary = await getWeekSummary()
-    return summary
+    return await getWeekSummary()
 })
 
 app.listen({ port: 3333 })
