@@ -23,8 +23,8 @@ export const SummaryGoal = () => {
     return null
   }
 
-  const firstDayOfWeek = dayjs().startOf('week').format('D MMM')
-  const lastDayOfWeek = dayjs().endOf('week').format('D MMM')
+  const firstDayOfWeek = dayjs().startOf('week').format('D MMMM')
+  const lastDayOfWeek = dayjs().endOf('week').format('D MMMM')
   const completedPercent = Math.round((data?.completed * 100) / data?.total)
   const completed = Object.entries(data.goalsPerDay).map(([key, value]) => {
     const date = dayjs(key).format('D[ de ]MMMM')
