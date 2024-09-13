@@ -12,10 +12,10 @@ export type SummaryResponse = {
 }
 
 export type PendingGoalsResponse = {
-    id: string
-    title: string
-    desireWeeklyFrequency: number,
-    completionCount: number
+  id: string
+  title: string
+  desireWeeklyFrequency: number
+  completionCount: number
 }[]
 
 export const getSummary = async (): Promise<SummaryResponse> => {
@@ -25,7 +25,21 @@ export const getSummary = async (): Promise<SummaryResponse> => {
 }
 
 export const getPending = async (): Promise<PendingGoalsResponse> => {
-    const res = await fetch("http://localhost:3333/goals/pending")
-    const data = await res.json()
-    return data.pendingGoals
+  const res = await fetch('http://localhost:3333/goals/pending')
+  const data = await res.json()
+  return data.pendingGoals
+}
+
+export const createGoalCompletion = async (goalId: string): Promise<void> => {
+  try {
+    await fetch('http://localhost:3333/goals/complete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ goalId }),
+    })
+  } catch (error) {
+    console.error(error)
+  }
 }
