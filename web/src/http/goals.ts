@@ -1,0 +1,31 @@
+export type SummaryResponse = {
+  total: number
+  completed: number
+  goalsPerDay: Record<
+    string,
+    {
+      id: string
+      title: string
+      createAt: string
+    }[]
+  >
+}
+
+export type PendingGoalsResponse = {
+    id: string
+    title: string
+    desireWeeklyFrequency: number,
+    completionCount: number
+}[]
+
+export const getSummary = async (): Promise<SummaryResponse> => {
+  const res = await fetch('http://localhost:3333/goals/summary')
+  const data = await res.json()
+  return data.summary
+}
+
+export const getPending = async (): Promise<PendingGoalsResponse> => {
+    const res = await fetch("http://localhost:3333/goals/pending")
+    const data = await res.json()
+    return data.pendingGoals
+}
